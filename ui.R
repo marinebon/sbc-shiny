@@ -26,10 +26,13 @@ shinyUI(
              wellPanel(
                h3(div(strong("FILTERING OPTIONS"))),
                br(),
-               selectInput("filter_data",
-                           label=div(em("Choose dataset to display:")),
-                           choices=list("Deep Fish","Mobile Invertebrates","Fish Density")
-               ),
+               selectInput(
+                 "filter_data",
+                 label   = div(em("Choose dataset to display:")),
+                 choices = list(
+                   #"Deep Fish"            = 'DeepFish',      # EMPTY FILE!
+                   "Fish Density"         = 'FishDensity',
+                   "Mobile Invertebrates" = 'Mobile')),
                br(),
                selectInput("filter_site",
                            label=div(em("Find specific sites:")),

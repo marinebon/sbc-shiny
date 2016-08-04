@@ -1,7 +1,7 @@
 ###### Practcing server.R###
-
-
+library(htmltools)
 library(shiny)
+library(readr)
 library(dplyr)
 library(tidyr)
 library(shinythemes)
@@ -9,9 +9,9 @@ library(leaflet)
 library(rsconnect)
 library(rgdal) # install.packages('rgdal') # https://cran.r-project.org/web/views/Spatial.html
 
-DeepFish <- read.csv("data/deep_water_fish_diversity/fish_density.csv",header=TRUE)
-Mobile <- read.csv("data/kelp_forest/mobileinvertbrate_diversity_web.csv",header=TRUE)
-FishDensity<- read.csv("data/kelp_forest/fish_density_web.csv",header=TRUE)
+#DeepFish    <- read_csv("data/deep_water_fish_diversity/fish_density.csv") # EMPTY FILE!
+Mobile      <- read_csv("data/kelp_forest/mobileinvertbrate_diversity_web.csv")
+FishDensity <- read_csv("data/kelp_forest/fish_density_web.csv")
 
 #shp = readOGR('/Users/devinspencer/Downloads/ne_10m_admin_1_states_provinces','ne_10m_admin_1_states_provinces') # slotNames(shp) # summary(shp@data) # View(shp@data)
 #shp_ca = subset(shp, name == 'California') # plot(shp_ca)
@@ -19,67 +19,64 @@ FishDensity<- read.csv("data/kelp_forest/fish_density_web.csv",header=TRUE)
 shinyServer(function(input,output,session) {
   
   ##Define data set to plot - filter first by data set and then filter by site
-  data <- reactive({
-    if (input$filter_data == "Deep Water Fish Diversity"){
-      data <- DeepFish
-    } else if (input$filter_data == "Mobile Invertebrates"){
-      data <- Mobile 
-    } else if (input$filter_data == "Fish Density"){
-      data <- FishDensity 
+  get_data <- reactive({
+    d = get(input$filter_data)
+    d['v'] = d[c('Mobile'='richness', 'FishDensity'='density')[input$filter_data]]
+    
+    if (input$filter_site != "All"){
+      d <- filter(d, site == input$filter_site)
     }
     
-    if (input$filter_site == "All"){
-      data <- data
-    } else
-      data <- filter(data,site == input$filter_site)
+    # return data
+    return(d)
   })
   
   ##Generate data table
   output$table <- DT::renderDataTable({
-    dat <- as.data.frame(data())
-    colnames(dat) <- c("Year","Site","Richness","Shannon Index","Hill Number","Latitude","Longitude")
-    DT::datatable(dat)
+    get_data() %>%
+      DT::datatable(dat)
   })
   
   ##Summarize data - total number of records for each site, range of years, average diversity per site over years
-  
-  map_data <- reactive({
-    dat <- as.data.frame(data())
-    tot_rec <- count(dat,site)
-    range <- dat %>% group_by(site) %>% summarise(min=min(year),max=max(year)) %>% mutate(range=max-min)
-    avg_div <- dat %>% group_by(site) %>% summarise(avg_div=mean(richness))
-    coord <- dat %>% select(site,latitude,longitude)
-    sum <- left_join(tot_rec,range,by="site")
-    sum <- sum %>% left_join(avg_div,by="site")
-    sum <- sum %>% left_join(coord,by="site")
-    sum <- distinct(sum)
-    sum$avg_div <- round(sum$avg_div,2)
-    sum
-  })
+  summarize_data <- function(dat) {
+    
+    dat %>% 
+      group_by(site) %>% 
+      summarise(
+        lon      = first(longitude),
+        lat      = first(latitude),
+        yr_min   = min(year),
+        yr_max   = max(year),
+        yr_range = yr_max - yr_min,
+        yr_n   = n(),
+        v_avg    = mean(v))
+    
+  }
   
   ##Generate map from summary data above
-  
   output$map <- renderLeaflet({
-    dat <- as.data.frame(map_data())
-    leaflet(data=dat) %>%
-      addProviderTiles("Esri.OceanBasemap") %>%  ##Esri.NatGeoWorldMap,* Esri.OceanBasemap, Esri.WorldImager
-      setView(-119.7,34.4,zoom=8) %>%
-      addCircleMarkers(
-        lng = ~longitude,
-        lat = ~latitude,
-        popup = ~paste0(div(strong("Site: ")),as.character(site),br(),div(strong("No. of records: ")),as.character(n),br(),div(strong("Avg. richness: ")),as.character(avg_div)),
-        radius= ~n,
-        fillOpacity=0.8,
-        clusterOptions = markerClusterOptions()
-      )
+    
+    get_data() %>%
+      summarize_data() %>%
+      leaflet() %>%
+        addProviderTiles("Esri.OceanBasemap") %>%  ##Esri.NatGeoWorldMap,* Esri.OceanBasemap, Esri.WorldImager
+        setView(-119.7,34.4,zoom=8) %>%
+        addCircleMarkers(
+          lng = ~lon,
+          lat = ~lat,
+          popup = ~paste(
+              strong("Site: "), site, br(),
+              strong("No. of records: "), as.character(yr_n), br(),
+              strong("Avg. value: "), as.character(v_avg)),
+          radius = ~yr_n,
+          fillOpacity=0.8,
+          clusterOptions = markerClusterOptions())
   })
   
   ##Generate summary table
-  
   output$summary <- DT::renderDataTable({
-    dat_m <- as.data.frame(map_data())
-    colnames(dat_m) <- c("Site","Number of records","First year recorded","Last year recorded","Total #years on record","Average diversity","Latitude","Longitude")
-    DT::datatable(dat_m)
+    summarize_data(get_data()) %>%
+      DT::datatable()
   })
   
   ##Generate downloadable Data 
