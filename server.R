@@ -34,7 +34,7 @@ shinyServer(function(input,output,session) {
   ##Generate data table
   output$table <- DT::renderDataTable({
     get_data() %>%
-      DT::datatable(dat)
+      DT::datatable()
   })
   
   ##Summarize data - total number of records for each site, range of years, average diversity per site over years
