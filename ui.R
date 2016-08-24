@@ -30,7 +30,7 @@ shinyUI(
                  "filter_data",
                  label   = div(em("Choose dataset to display:")),
                  choices = list(
-                   #"Deep Fish"            = 'DeepFish',      # EMPTY FILE!
+                   "Deep Fish"            = 'DeepFish',     
                    "Fish Density"         = 'FishDensity',
                    "Mobile Invertebrates" = 'Mobile')),
                br(),
