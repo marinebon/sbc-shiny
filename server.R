@@ -22,7 +22,7 @@ shinyServer(function(input,output,session) {
   ##Define data set to plot - filter first by data set and then filter by site
   get_data <- reactive({
     d = get(input$filter_data)
-    d['v'] = d[c('Mobile'='richness', 'FishDensity'='density', 'DeepFish'='richness', 'Kelpbio'='biomass_kg')[input$filter_data]]
+    d['v'] = d[c('Mobile'='richness', 'FishDensity'='density', 'DeepFish'='richness', 'Kelpbio'='Kelp Biomass (kg)')[input$filter_data]]
     
     if (input$filter_site != "All"){
       d <- filter(d, site == input$filter_site)
@@ -44,13 +44,13 @@ shinyServer(function(input,output,session) {
     dat %>% 
       group_by(site) %>% 
       summarise(
-        lon      = first(longitude),
-        lat      = first(latitude),
-        yr_min   = min(year),
-        yr_max   = max(year),
-        yr_range = yr_max - yr_min,
-        yr_n   = n(),
-        v_avg    = mean(v))
+        Longitude      = first(longitude),
+        Latitude      = first(latitude),
+        FirstYear   = min(year),
+        LastYear   = max(year),
+        YearRange = LastYear - FirstYear,
+        NumberofYears   = n(),
+        AverageValue    = mean(v))
     
   }
   
@@ -63,13 +63,13 @@ shinyServer(function(input,output,session) {
         addProviderTiles("Esri.OceanBasemap") %>%  ##Esri.NatGeoWorldMap,* Esri.OceanBasemap, Esri.WorldImager
         setView(-119.7,34.4,zoom=8) %>%
         addCircleMarkers(
-          lng = ~lon,
-          lat = ~lat,
+          lng = ~Longitude,
+          lat = ~Latitude,
           popup = ~paste(
               strong("Site: "), site, br(),
-              strong("No. of records: "), as.character(yr_n), br(),
-              strong("Avg. value: "), as.character(v_avg)),
-          radius = ~yr_n,
+              strong("No. of records: "), as.character(NumberofYears), br(),
+              strong("Avg. value: "), as.character(AverageValue)),
+          radius = ~NumberofYears,
           fillOpacity=0.8,
           clusterOptions = markerClusterOptions())
   })

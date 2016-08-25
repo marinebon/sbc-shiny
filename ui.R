@@ -38,7 +38,7 @@ shinyUI(
                br(),
                selectInput("filter_site",
                            label=div(em("Find specific sites:")),
-                           choices=c("All",site)
+                           choices=c("All")
                )
              ),
              downloadButton('downloadData', 'Download')
