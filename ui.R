@@ -7,6 +7,7 @@ library(tidyr) #Data wrangling package
 library(shinythemes) #Provide CSS themes for app
 library(leaflet) #used to devleop map 
 library(rsconnect) #Used to deploy shiny app to shinyapp.io for inclusion in website 
+library(plotly)
 
 ######To deploy to the shiny.io server you must use relative path names and your data must be in a data folder within the folder that contains the ui.R file and the server.R file. Only files in the folder and subfolders of your Shiny app are made available to shinyapps.io! ######### 
 
