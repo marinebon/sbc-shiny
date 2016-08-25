@@ -12,6 +12,7 @@ library(rgdal) # install.packages('rgdal') # https://cran.r-project.org/web/view
 DeepFish    <- read_csv("data/deep_water_fish_diversity/fish_diversity.csv")
 Mobile      <- read_csv("data/kelp_forest/mobileinvertbrate_diversity_web.csv")
 FishDensity <- read_csv("data/kelp_forest/fish_density_web.csv")
+Kelpbio     <- read_csv("data/kelp_forest/kelp_biomass_web.csv")
 
 #shp = readOGR('/Users/devinspencer/Downloads/ne_10m_admin_1_states_provinces','ne_10m_admin_1_states_provinces') # slotNames(shp) # summary(shp@data) # View(shp@data)
 #shp_ca = subset(shp, name == 'California') # plot(shp_ca)
@@ -21,7 +22,7 @@ shinyServer(function(input,output,session) {
   ##Define data set to plot - filter first by data set and then filter by site
   get_data <- reactive({
     d = get(input$filter_data)
-    d['v'] = d[c('Mobile'='richness', 'FishDensity'='density', 'DeepFish'='richness')[input$filter_data]]
+    d['v'] = d[c('Mobile'='richness', 'FishDensity'='density', 'DeepFish'='richness', 'Kelpbio'='biomass_kg')[input$filter_data]]
     
     if (input$filter_site != "All"){
       d <- filter(d, site == input$filter_site)

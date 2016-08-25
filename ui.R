@@ -13,6 +13,7 @@ library(rsconnect) #Used to deploy shiny app to shinyapp.io for inclusion in web
 DeepFish <- read.csv("data/deep_water_fish_diversity/fish_diversity.csv",header=TRUE)
 Mobile <- read.csv("data/kelp_forest/mobileinvertbrate_diversity_web.csv",header=TRUE)
 FishDensity<- read.csv("data/kelp_forest/fish_density_web.csv",header=TRUE)
+Kelpbio<- read.csv("data/kelp_forest/kelp_biomass_web.csv", header=TRUE)
 
 site <- as.character(unique(DeepFish$site)) ##Convert site names to list - if these differ between datasets, you will have to change
 
@@ -32,7 +33,8 @@ shinyUI(
                  choices = list(
                    "Deep Fish"            = 'DeepFish',     
                    "Fish Density"         = 'FishDensity',
-                   "Mobile Invertebrates" = 'Mobile')),
+                   "Mobile Invertebrates" = 'Mobile',
+                   "Kelp Biomass"         = 'Kelpbio')),
                br(),
                selectInput("filter_site",
                            label=div(em("Find specific sites:")),
