@@ -41,14 +41,15 @@ shinyUI(
                ),
       column(12,
              #Panel for the plot :) 
-             absolutePanel(id = "Controls", class = "panel panel-default", fixed = TRUE,                   draggable = TRUE, top = 60, left ="auto", right = 20, bottom = "auto", width =                300, height = "auto",
-             wellPanel(
-               #plot
-               actionButton("DeepFishplot","Deep Fish Plot"),
-               plotOutput("plot"),
+             absolutePanel(id = "Controls", class = "panel panel-default", fixed = TRUE,                   draggable = TRUE, top = 150, left ="auto", right = 20, bottom = "100", width =                350, height = "auto",
+             wellPanel(style = "opacity:0.82; z-index = 100",
                
-               h3(div(strong("FILTERING OPTIONS"))),
+               h4(div(strong("Filtering Options"))),
                br(),
+               
+               downloadButton('downloadData', 'Download Dataset'),
+               br(),
+               
                selectInput(
                  "filter_data",
                  label   = div(em("Choose dataset to display:")),
@@ -57,17 +58,18 @@ shinyUI(
                    "Fish Density"         = 'FishDensity',
                    "Mobile Invertebrates" = 'Mobile',
                    "Kelp Biomass"         = 'Kelpbio')),
-               br(),
                selectInput("filter_site",
                            label=div(em("Find specific sites:")),
                            choices=c("All")
-               )
              ),
-             downloadButton('downloadData', 'Download')
+
+             #plot
+             plotOutput("plot", height = 250)
       )
              )
       )
     )
   )
- )
+    )
+  )
 )
