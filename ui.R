@@ -24,8 +24,29 @@ shinyUI(
       br(),
       h2(div(strong("SBC MBON Interactive Map")),align="center"),
       hr(),
-      column(3,
+      column(12,
+             tabsetPanel(
+               type="tabs",
+               tabPanel("Interactive Map",
+                        br(),
+                        leafletOutput("map",width="100%",height=600)
+               ),
+               tabPanel("Data Table",
+                        br(),
+                        DT::dataTableOutput("table")
+               ),
+               tabPanel("Data Summary",
+                        br(),
+                        DT::dataTableOutput("summary")
+               ),
+      column(12,
+             #Panel for the plot :) 
+             absolutePanel(id = "Controls", class = "panel panel-default", fixed = TRUE,                   draggable = TRUE, top = 60, left ="auto", right = 20, bottom = "auto", width =                300, height = "auto",
              wellPanel(
+               #plot
+               actionButton("DeepFishplot","Deep Fish Plot"),
+               plotOutput("plot"),
+               
                h3(div(strong("FILTERING OPTIONS"))),
                br(),
                selectInput(
@@ -43,24 +64,10 @@ shinyUI(
                )
              ),
              downloadButton('downloadData', 'Download')
-      ),
-      column(9,
-             tabsetPanel(
-               type="tabs",
-               tabPanel("Interactive Map",
-                        br(),
-                        leafletOutput("map",width="100%",height=600)
-               ),
-               tabPanel("Data Table",
-                        br(),
-                        DT::dataTableOutput("table")
-               ),
-               tabPanel("Data Summary",
-                        br(),
-                        DT::dataTableOutput("summary")
-               )
+      )
              )
       )
     )
   )
+ )
 )

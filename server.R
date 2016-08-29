@@ -19,6 +19,11 @@ Kelpbio     <- read_csv("data/kelp_forest/kelp_biomass_web.csv")
 
 shinyServer(function(input,output,session) {
   
+  ## Plot data set on map 
+  output$plot <- renderPlot({
+    input$DeepFishplot
+    plot(DeepFish$year,DeepFish$richness)
+  })
   ##Define data set to plot - filter first by data set and then filter by site
   get_data <- reactive({
     d = get(input$filter_data)
