@@ -41,8 +41,8 @@ shinyUI(
                ),
       column(12,
              #Panel for the plot :) 
-             absolutePanel(id = "Controls", class = "panel panel-default", fixed = TRUE,                   draggable = TRUE, top = 150, left ="auto", right = 20, bottom = "100", width =                350, height = "auto",
-             wellPanel(style = "opacity:0.82; z-index = 100",
+             absolutePanel(id = "Controls", class = "panel panel-default", fixed = TRUE,                   draggable = TRUE, top = 150, left ="auto", right = 20, bottom = "100", width =                350, height = "auto", style = "opacity:0.75; z-index = 100",
+             wellPanel(
                
                h4(div(strong("Filtering Options"))),
                br(),

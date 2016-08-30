@@ -22,7 +22,7 @@ shinyServer(function(input,output,session) {
   ## Plot data set on map 
   output$plot <- renderPlot({
     input$DeepFishplot
-    plot(DeepFish$year,DeepFish$richness, xlab = "Year")
+    plot(DeepFish$year,DeepFish$richness, xlab = "Year", frame.plot = "FALSE", col = "green2", xlim=c(1994, 2016))
   })
   ##Define data set to plot - filter first by data set and then filter by site
   get_data <- reactive({
@@ -66,7 +66,7 @@ shinyServer(function(input,output,session) {
       summarize_data() %>%
       leaflet() %>%
         addProviderTiles("Esri.OceanBasemap") %>%  ##Esri.NatGeoWorldMap,* Esri.OceanBasemap, Esri.WorldImager
-        setView(-119.7,34.4,zoom=8) %>%
+        setView(-119.80,34.2,zoom=9) %>%
         addCircleMarkers(
           lng = ~Longitude,
           lat = ~Latitude,
