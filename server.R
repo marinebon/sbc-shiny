@@ -22,7 +22,7 @@ shinyServer(function(input,output,session) {
   ## Plot data set on map 
   output$plot <- renderPlot({
     input$DeepFishplot
-    plot(DeepFish$year,DeepFish$richness, xlab = "Year", frame.plot = "FALSE", col = "green2", xlim=c(1994, 2016))
+    plot(input$filter_data, xlab = "Year", frame.plot = "FALSE", col = "green2", xlim=c(1994, 2016), ylim=c(0,100))
   })
   ##Define data set to plot - filter first by data set and then filter by site
   get_data <- reactive({
