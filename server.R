@@ -27,8 +27,9 @@ shinyServer(function(input,output,session) {
     ## Plot data set on map 
     output$plot <- renderPlot({
       dataset <- get_data()
+      
       # (input$filter_data != "DeepFish")
-      plot(dataset$year, dataset$v, xlab = "Year", ylab = "v", frame.plot = "FALSE", col = "green2", xlim=c(1994, 2016), ylim=c(0,100))
+      plot(dataset$year, dataset$v, xlab = "Year", ylab = "v", frame.plot = "FALSE", col = "darkblue", xlim=c(1994, 2016), ylim=c(0,10))
     })
     
     # if (input$filter_site != "All"){
