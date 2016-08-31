@@ -29,8 +29,29 @@ shinyUI(
                type="tabs",
                tabPanel("Interactive Map",
                         br(),
-                        leafletOutput("map",width="100%",height=600)
-               ),
+                        leafletOutput("map",width="100%",height=600),
+                        
+        #Panel for the plot and choosing a dataset on the map :) 
+          absolutePanel(id= "Map Controls", class = "panel panel-default", fixed = TRUE, draggable = TRUE, top = 150, letf = "auto", right = 20, bottom = "100", width = 350, height = "auto", style = "opacity:0.75; z-index = 100" ,
+          wellPanel(
+            h4(div(strong("Filtering Options"))),
+            br(),
+            
+            downloadButton('downloadData', 'Download Dataset'),
+            br(),
+            
+            selectInput(
+              "filter_data",
+              label = div(em("Choose dataset to display:")),
+              choices = list(
+                "Deep Fish Density "    = 'DeepFish',
+                "Fish Density"          = 'FishDensity',
+                "Mobile Invertebrates"  = 'Mobile',
+                "Kelp Biomass"          = 'Kelpbio')), 
+            
+            #CGenerate plot 
+            plotOutput("plot", height = 250)
+               ))),
                tabPanel("Data Table",
                         br(),
                         DT::dataTableOutput("table")
@@ -38,38 +59,9 @@ shinyUI(
                tabPanel("Data Summary",
                         br(),
                         DT::dataTableOutput("summary")
-               ),
-      column(12,
-             #Panel for the plot :) 
-             absolutePanel(id = "Controls", class = "panel panel-default", fixed = TRUE,                   draggable = TRUE, top = 150, left ="auto", right = 20, bottom = "100", width =                350, height = "auto", style = "opacity:0.75; z-index = 100",
-             wellPanel(
-               
-               h4(div(strong("Filtering Options"))),
-               br(),
-               
-               downloadButton('downloadData', 'Download Dataset'),
-               br(),
-               
-               selectInput(
-                 "filter_data",
-                 label   = div(em("Choose dataset to display:")),
-                 choices = list(
-                   "Deep Fish"            = 'DeepFish',     
-                   "Fish Density"         = 'FishDensity',
-                   "Mobile Invertebrates" = 'Mobile',
-                   "Kelp Biomass"         = 'Kelpbio')),
-               selectInput("filter_site",
-                           label=div(em("Find specific sites:")),
-                           choices=c("All")
-             ),
-
-             #plot
-             plotOutput("plot", height = 250)
-      )
+               )
+          )
+               )
              )
       )
     )
-  )
-    )
-  )
-)

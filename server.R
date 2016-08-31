@@ -19,20 +19,22 @@ Kelpbio     <- read_csv("data/kelp_forest/kelp_biomass_web.csv")
 
 shinyServer(function(input,output,session) {
   
-  ## Plot data set on map 
-  output$plot <- renderPlot({
-    input$DeepFishplot
-    plot(input$filter_data, xlab = "Year", frame.plot = "FALSE", col = "green2", xlim=c(1994, 2016), ylim=c(0,100))
-  })
   ##Define data set to plot - filter first by data set and then filter by site
   get_data <- reactive({
     d = get(input$filter_data)
     d['v'] = d[c('Mobile'='richness', 'FishDensity'='density', 'DeepFish'='richness', 'Kelpbio'='Kelp Biomass (kg)')[input$filter_data]]
     
-    if (input$filter_site != "All"){
-      d <- filter(d, site == input$filter_site)
-    }
+    ## Plot data set on map 
+    output$plot <- renderPlot({
+      dataset <- get_data()
+      # (input$filter_data != "DeepFish")
+      plot(dataset$year, dataset$v, xlab = "Year", ylab = "v", frame.plot = "FALSE", col = "green2", xlim=c(1994, 2016), ylim=c(0,100))
+    })
     
+    # if (input$filter_site != "All"){
+    #   d <- filter(d, site == input$filter_site)
+    # }
+    # 
     # return data
     return(d)
   })
@@ -88,7 +90,7 @@ shinyServer(function(input,output,session) {
   ##Generate downloadable Data 
   output$downloadData <- downloadHandler(
     filename = function() { 
-      paste(input$filter_data, '_', input$filter_site, '.csv', sep='') 
+      paste(input$filter_data, '_', '.csv', sep='')
       #paste(input$filter_data, '.zip', sep='')
     },
     content = function(file) {
