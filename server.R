@@ -8,7 +8,7 @@ library(shinythemes)
 library(leaflet)
 library(rsconnect)
 library(rgdal)# install.packages('rgdal') # https://cran.r-project.org/web/views/Spatial.html
-library(plotly)
+
 DeepFish    <- read_csv("data/deep_water_fish_diversity/fish_diversity.csv")
 Mobile      <- read_csv("data/kelp_forest/mobileinvertbrate_diversity_web.csv")
 FishDensity <- read_csv("data/kelp_forest/fish_density_web.csv")

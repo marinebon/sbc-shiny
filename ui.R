@@ -7,7 +7,6 @@ library(tidyr) #Data wrangling package
 library(shinythemes) #Provide CSS themes for app
 library(leaflet) #used to devleop map 
 library(rsconnect) #Used to deploy shiny app to shinyapp.io for inclusion in website 
-library(plotly)
 
 ######To deploy to the shiny.io server you must use relative path names and your data must be in a data folder within the folder that contains the ui.R file and the server.R file. Only files in the folder and subfolders of your Shiny app are made available to shinyapps.io! ######### 
 
@@ -32,7 +31,7 @@ shinyUI(
                         leafletOutput("map",width="100%",height=600),
                         
         #Panel for the plot and choosing a dataset on the map :) 
-          absolutePanel(id= "Map Controls", class = "panel panel-default", fixed = TRUE, draggable = TRUE, top = 150, letf = "auto", right = 20, bottom = "100", width = 350, height = "auto", style = "opacity:0.75; z-index = 100" ,
+          absolutePanel(id= "Map Controls", class = "panel panel-default", fixed = TRUE, draggable = TRUE, top = 150, letf = "auto", right = 20, bottom = "auto", width = 350, height = "auto", style = "opacity:0.85; z-index = 100" ,
           wellPanel(
             h4(div(strong("Filtering Options"))),
             br(),
@@ -49,7 +48,7 @@ shinyUI(
                 "Mobile Invertebrates"  = 'Mobile',
                 "Kelp Biomass"          = 'Kelpbio')), 
             
-            #CGenerate plot 
+            #Generate plot 
             plotOutput("plot", height = 250)
                ))),
                tabPanel("Data Table",
