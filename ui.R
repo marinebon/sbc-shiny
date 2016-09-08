@@ -43,10 +43,11 @@ shinyUI(
               "filter_data",
               label = div(em("Choose dataset to display:")),
               choices = list(
+                "Kelp Biomass"          = 'Kelpbio',
                 "Deep Fish Density "    = 'DeepFish',
                 "Fish Density"          = 'FishDensity',
-                "Mobile Invertebrates"  = 'Mobile',
-                "Kelp Biomass"          = 'Kelpbio')), 
+                "Mobile Invertebrates"  = 'Mobile'
+                )), 
             
             #Generate plot 
             plotOutput("plot", height = 250)

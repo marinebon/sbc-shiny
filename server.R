@@ -14,7 +14,7 @@ Mobile      <- read_csv("data/kelp_forest/mobileinvertbrate_diversity_web.csv")
 FishDensity <- read_csv("data/kelp_forest/fish_density_web.csv")
 Kelpbio     <- read_csv("data/kelp_forest/kelp_biomass_web.csv")
 var_names   <- read_csv("data/var_names.csv")
-dataset_v   <- c('Mobile'='richness', 'FishDensity'='density', 'DeepFish'='richness', 'Kelpbio'='Kelp Biomass (kg)')
+dataset_v   <- c('Mobile'='richness', 'FishDensity'='density', 'DeepFish'='richness', 'Kelpbio'='kelp_biomass_kg')
 #shp = readOGR('/Users/devinspencer/Downloads/ne_10m_admin_1_states_provinces','ne_10m_admin_1_states_provinces') # slotNames(shp) # summary(shp@data) # View(shp@data)
 #shp_ca = subset(shp, name == 'California') # plot(shp_ca)
 
@@ -92,7 +92,7 @@ shinyServer(function(input,output,session) {
               strong("Site: "), site, br(),
               strong("No. of records: "), as.character(NumberofYears), br(),
               strong("Avg. value: "), as.character(AverageValue)),
-          radius = ~NumberofYears,
+          # radius = ~NumberofYears,
           fillOpacity=0.8,
           clusterOptions = markerClusterOptions())
   })
