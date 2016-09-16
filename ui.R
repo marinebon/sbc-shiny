@@ -28,7 +28,7 @@ shinyUI(
                type="tabs",
                tabPanel("Interactive Map",
                         br(),
-                        leafletOutput("map",width="100%",height=600),
+                        leafletOutput("map",width="100%",height= "100%"),
                         
         #Panel for the plot and choosing a dataset on the map :) 
           absolutePanel(id= "Map Controls", class = "panel panel-default", fixed = TRUE, draggable = TRUE, top = 150, letf = "auto", right = 20, bottom = "auto", width = 350, height = "auto", style = "opacity:0.85; z-index = 100" ,
