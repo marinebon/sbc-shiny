@@ -28,10 +28,10 @@ shinyUI(
                type="tabs",
                tabPanel("Interactive Map",
                         br(),
-                        leafletOutput("map",width="100%",height= "100%"),
+                        leafletOutput("map",width="100%",height="100%"),
                         
         #Panel for the plot and choosing a dataset on the map :) 
-          absolutePanel(id= "Map Controls", class = "panel panel-default", fixed = TRUE, draggable = TRUE, top = 150, letf = "auto", right = 20, bottom = "auto", width = 350, height = "auto", style = "opacity:0.85; z-index = 100" ,
+          absolutePanel(id= "Map Controls", class = "panel panel-default", fixed = TRUE, draggable = TRUE, top = 150, left = "auto", right = 20, bottom = "auto", width = 350, height = "auto", style = "opacity:0.85; z-index = 100" ,
           wellPanel(
             h4(div(strong("Filtering Options"))),
             br(),
@@ -49,6 +49,12 @@ shinyUI(
                 "Mobile Invertebrates"  = 'Mobile'
                 )), 
             
+            selectInput(
+              "filter_data",
+              label = div (em("Choose a Location:")),
+              choices = list( 
+                "Anacapa Island"        - 'v$location'  )
+            ),
             #Generate plot 
             plotOutput("plot", height = 250)
                ))),
