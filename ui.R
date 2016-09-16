@@ -48,13 +48,13 @@ shinyUI(
                 "Fish Density"          = 'FishDensity',
                 "Mobile Invertebrates"  = 'Mobile'
                 )), 
-            
-            selectInput(
-              "filter_data",
-              label = div (em("Choose a Location:")),
-              choices = list( 
-                "Anacapa Island"        - 'v$location'  )
-            ),
+            # 
+            # selectInput(
+            #   "filter_data",
+            #   label = div (em("Choose a Location:")),
+            #   choices = list( 
+            #     "Anacapa Island"        - 'v$location'  )
+            # ),
             #Generate plot 
             plotOutput("plot", height = 250)
                ))),
