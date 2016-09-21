@@ -25,8 +25,6 @@ shinyServer(function(input,output,session) {
     d = get(input$filter_data)
     d['v'] = d[dataset_v[input$filter_data]]
     
-    if (!)
-    
     ## Plot data set on map 
     output$plot <- renderPlot({
       dataset <- get_data()

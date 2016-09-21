@@ -28,7 +28,7 @@ shinyUI(
                type="tabs",
                tabPanel("Interactive Map",
                         br(),
-                        leafletOutput("map",width="100%",height="100%"),
+                        leafletOutput("map",width="100%",height="600"),
                         
         #Panel for the plot and choosing a dataset on the map :) 
           absolutePanel(id= "Map Controls", class = "panel panel-default", fixed = TRUE, draggable = TRUE, top = 150, left = "auto", right = 20, bottom = "auto", width = 350, height = "auto", style = "opacity:0.85; z-index = 100" ,
@@ -48,13 +48,21 @@ shinyUI(
                 "Fish Density"          = 'FishDensity',
                 "Mobile Invertebrates"  = 'Mobile'
                 )), 
-            # 
-            # selectInput(
-            #   "filter_data",
-            #   label = div (em("Choose a Location:")),
-            #   choices = list( 
-            #     "Anacapa Island"        - 'v$location'  )
-            # ),
+
+            selectInput(
+              "filter_data",
+              label = div (em("Choose a Location:")),
+              choices = list(
+                "Anacapa Island"        = 'anacapa_island',
+                "Santa Cruz Island"     = 'santa_cruz_island',
+                "Santa Barbara Island"  = 'santa_barbara_island',
+                "San Miguel Island"     = 'san_miguel_island',
+                "Santa Rosa Island"     = 'santa_rosa_island',
+                "San Nicolas Island"    = 'san_nicolas_island',
+                "San Clemente Island"   = 'san_clemente_island',
+                "Mainland"              = 'mainland'
+                )),
+            
             #Generate plot 
             plotOutput("plot", height = 250)
                ))),
