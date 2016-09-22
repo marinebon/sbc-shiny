@@ -65,6 +65,9 @@ shinyServer(function(input,output,session) {
   summarize_data <- function(dat) {
     
     dat %>% 
+      filter(
+        !is.na(longitude),
+        !is.na(latitude)) %>%
       group_by(site) %>% 
       summarise(
         Longitude     = first(longitude),
