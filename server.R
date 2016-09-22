@@ -22,28 +22,29 @@ shinyServer(function(input,output,session) {
   
   ##Define data set to plot - filter first by data set and then filter by site
   get_data <- reactive({
-    d = get(input$filter_data)
-    d['v'] = d[dataset_v[input$filter_data]]
+    d = get(input$sel_dataset)
+    d['v'] = d[dataset_v[input$sel_dataset]]
     
-    ## Plot data set on map 
-    output$plot <- renderPlot({
-      dataset <- get_data()
-      
-      # (input$filter_data != "DeepFish")
-      plot(
-        dataset$year, dataset$v, 
-        xlab = "Year", ylab = dataset_v[input$filter_data], 
-        frame.plot = "FALSE", col = "darkblue")
-    })
-    
-    # if (input$filter_site != "All"){
-    #   d <- filter(d, site == input$filter_site)
-    # }
-    # 
+    if (input$sel_location != 'all'){
+      d <- filter(d, location == input$sel_location)
+    }
+
     # return data
     return(d)
   })
+
+  ## Plot data set on map 
+  output$plot <- renderPlot({
+    dataset <- get_data()
+    
+    # (input$sel_dataset != "DeepFish")
+    plot(
+      dataset$year, dataset$v, 
+      xlab = "Year", ylab = dataset_v[input$sel_dataset], 
+      frame.plot = "FALSE", col = "darkblue")
+  })
   
+    
   # rename columns based on var_names.csv
   rename_vars = function(d){
     for (v in var_names$var){
@@ -111,8 +112,8 @@ shinyServer(function(input,output,session) {
   ##Generate downloadable Data 
   output$downloadData <- downloadHandler(
     filename = function() { 
-      paste(input$filter_data, '_', '.csv', sep='')
-      #paste(input$filter_data, '.zip', sep='')
+      paste(input$sel_dataset, '_', '.csv', sep='')
+      #paste(input$sel_dataset, '.zip', sep='')
     },
     content = function(file) {
       write.csv(get_data(), file)

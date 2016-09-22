@@ -40,7 +40,7 @@ shinyUI(
             br(),
             
             selectInput(
-              "filter_data",
+              "sel_dataset",
               label = div(em("Choose dataset to display:")),
               choices = list(
                 "Kelp Biomass"          = 'Kelpbio',
@@ -49,19 +49,21 @@ shinyUI(
                 "Mobile Invertebrates"  = 'Mobile'
                 )), 
 # 
-#             selectInput(
-#               "filter_data",
-#               label = div (em("Choose a Location:")),
-#               choices = list(
-#                 "Anacapa Island"        = 'anacapa_island',
-#                 "Santa Cruz Island"     = 'santa_cruz_island',
-#                 "Santa Barbara Island"  = 'santa_barbara_island',
-#                 "San Miguel Island"     = 'san_miguel_island',
-#                 "Santa Rosa Island"     = 'santa_rosa_island',
-#                 "San Nicolas Island"    = 'san_nicolas_island',
-#                 "San Clemente Island"   = 'san_clemente_island',
-#                 "Mainland"              = 'mainland'
-#                 )),
+            selectInput(
+              "sel_location",
+              label = div (em("Choose a Location:")),
+              choices = list(
+                "All"                   = 'all',
+                "Anacapa Island"        = 'anacapa_island',
+                "Santa Cruz Island"     = 'santa_cruz_island',
+                "Santa Barbara Island"  = 'santa_barbara_island',
+                "San Miguel Island"     = 'san_miguel_island',
+                "Santa Rosa Island"     = 'santa_rosa_island',
+                "San Nicolas Island"    = 'san_nicolas_island',
+                "San Clemente Island"   = 'san_clemente_island',
+                "Mainland"              = 'mainland'
+                ),
+              selected = 'all'),
 #             
             #Generate plot 
             plotOutput("plot", height = 250)
