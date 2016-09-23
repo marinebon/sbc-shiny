@@ -41,10 +41,11 @@ shinyServer(function(input,output,session) {
     plot(
       dataset$year, dataset$v, 
       xlab = "Year", ylab = dataset_v[input$sel_dataset], 
-      frame.plot = "FALSE", col = "darkblue")
+      type="l", frame.plot = "FALSE", col = "darkblue")
   })
   
-    
+  # ggplot(data=Kelpbio, aes(x=year, y=kelp_biomass_kg)) + geom_bar(stat="identity")
+  
   # rename columns based on var_names.csv
   rename_vars = function(d){
     for (v in var_names$var){
@@ -99,6 +100,7 @@ shinyServer(function(input,output,session) {
           # radius = ~NumberofYears,
           fillOpacity=0.8,
           clusterOptions = markerClusterOptions())
+        
   })
   
   ##Generate summary table
