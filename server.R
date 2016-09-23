@@ -35,13 +35,17 @@ shinyServer(function(input,output,session) {
 
   ## Plot data set on map 
   output$plot <- renderPlot({
-    dataset <- get_data()
-    
-    # (input$sel_dataset != "DeepFish")
-    plot(
-      dataset$year, dataset$v, 
-      xlab = "Year", ylab = dataset_v[input$sel_dataset], 
-      type="l", frame.plot = "FALSE", col = "darkblue")
+    dataset<- get_data() 
+    write.csv(dataset,"data/aa.csv")
+  
+  ## Average diversity/biomass of all sites by year! 
+    dataset<-dataset %>%
+      group_by(year) %>%
+      summarise(v=mean(v,na.rm=T)) %>%
+      ungroup()
+     fit<-lm(dataset$v~dataset$year)
+    plot(dataset$year, dataset$v, xlab = "Year", ylab = dataset_v[input$sel_dataset], frame.plot = "FALSE", col = "darkblue")
+    abline(fit,col="blue")
   })
   
   # ggplot(data=Kelpbio, aes(x=year, y=kelp_biomass_kg)) + geom_bar(stat="identity")
@@ -76,10 +80,7 @@ shinyServer(function(input,output,session) {
         Latitude      = first(latitude),
         FirstYear     = min(year),
         LastYear      = max(year),
-        YearRange     = LastYear - FirstYear,
-        NumberofYears = n(),
         AverageValue  = mean(v))
-    
   }
   
   ##Generate map from summary data above
@@ -95,7 +96,6 @@ shinyServer(function(input,output,session) {
           lat = ~Latitude,
           popup = ~paste(
               strong("Site: "), site, br(),
-              strong("No. of records: "), as.character(NumberofYears), br(),
               strong("Avg. value: "), as.character(AverageValue)),
           # radius = ~NumberofYears,
           fillOpacity=0.8,
