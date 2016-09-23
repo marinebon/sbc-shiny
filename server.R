@@ -21,6 +21,8 @@ dataset_v   <- c('Mobile'='richness', 'FishDensity'='density', 'DeepFish'='richn
 shinyServer(function(input,output,session) {
   
   ##Define data set to plot - filter first by data set and then filter by site
+  
+  ###########http://stackoverflow.com/questions/28379937/change-selectize-choices-but-retain-previously-selected-values#########
   get_data <- reactive({
     d = get(input$sel_dataset)
     d['v'] = d[dataset_v[input$sel_dataset]]
@@ -45,7 +47,7 @@ shinyServer(function(input,output,session) {
       ungroup()
      fit<-lm(dataset$v~dataset$year)
     plot(dataset$year, dataset$v, xlab = "Year", ylab = dataset_v[input$sel_dataset], frame.plot = "FALSE", col = "darkblue")
-    abline(fit,col="blue")
+    abline(fit,col="darkblue")
   })
   
   # ggplot(data=Kelpbio, aes(x=year, y=kelp_biomass_kg)) + geom_bar(stat="identity")
