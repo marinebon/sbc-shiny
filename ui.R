@@ -38,10 +38,10 @@ shinyUI(
             
             downloadButton('downloadData', 'Download Dataset'),
             br(),
-            
+        
             selectInput(
               "sel_dataset",
-              label = div(em("Choose dataset to display:")),
+              label = div(em("Choose a dataset to display:")),
               choices = list(
                 "Kelp Biomass"          = 'Kelpbio',
                 "Deep Fish Density "    = 'DeepFish',
@@ -49,8 +49,6 @@ shinyUI(
                 "Mobile Invertebrates"  = 'Mobile'
                 ),
               
-              uiOutput("location")), 
-# 
             selectInput(
               "sel_location",
               label = div (em("Choose a location:")),
@@ -68,12 +66,14 @@ shinyUI(
                 "Footprint"             = 'footprint',
                 "Piggy Bank"            = 'piggy_bank'
                 ),
-              
+
               selected = 'all'),
-#             
+
+            uiOutput("location"),  #Location is coming from renderUI in server.R
+# #             
             #Generate plot 
             plotOutput("plot", height = 250)
-               ))),
+               )))),
                tabPanel("Data Table",
                         br(),
                         DT::dataTableOutput("table")
@@ -86,4 +86,4 @@ shinyUI(
                )
              )
       )
-)
+  )

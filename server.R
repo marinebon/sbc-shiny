@@ -23,21 +23,25 @@ shinyServer(function(input,output,session) {
   ##Define data set to plot - filter first by data set and then filter by site
   
   ###########http://stackoverflow.com/questions/28379937/change-selectize-choices-but-retain-previously-selected-values#########
-  
-  ## http://shiny.rstudio.com/articles/dynamic-ui.html ###
   get_data <- reactive({
     d = get(input$sel_dataset)
     d['v'] = d[dataset_v[input$sel_dataset]]
-    
-    
-    
-    if (input$sel_location != 'all'){
-      d <- filter(d, location == input$sel_location)
-    }
-
     # return data
     return(d)
   })
+    
+ loc <- reactive ({
+        switch(input$sel_dataset,
+              "Kelp Biomass"         = names(Kelpbio),
+              "Deep Fish Density"   = names(DeepFish),
+              "Fish Density"         = names(FishDensity),
+              "Mobile Invertebrates" = names(Mobile)
+        )
+ })
+  
+      output$location <- renderUI({
+        selectInput("sel_location","Select a location", choices = loc())
+      })
 
   ## Plot data set on map 
   output$plot <- renderPlot({
