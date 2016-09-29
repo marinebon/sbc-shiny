@@ -49,31 +49,31 @@ shinyUI(
                 "Mobile Invertebrates"  = 'Mobile'
                 ),
               
-            selectInput(
-              "sel_location",
-              label = div (em("Choose a location:")),
-              choices = list(
-                "All"                   = 'all',
-                "Anacapa Island"        = 'anacapa_island',
-                "Santa Barbara Island"  = 'santa_barbara_island',
-                "San Clemente Island"   = 'san_clemente_island',
-                "Santa Cruz Island"     = 'santa_cruz_island',
-                "San Miguel Island"     = 'san_miguel_island',
-                "San Nicolas Island"    = 'san_nicolas_island',
-                "Santa Rosa Island"     = 'santa_rosa_island',
-                "Mainland"              = 'mainland',
-                "Anacapa Passage"       = 'anacapa_passage',
-                "Footprint"             = 'footprint',
-                "Piggy Bank"            = 'piggy_bank'
-                ),
+            # selectInput(
+            #   "sel_location",
+            #   label = div (em("Choose a location:")),
+            #   choices = list(
+            #     "All"                   = 'all',
+            #     "Anacapa Island"        = 'anacapa_island',
+            #     "Santa Barbara Island"  = 'santa_barbara_island',
+            #     "San Clemente Island"   = 'san_clemente_island',
+            #     "Santa Cruz Island"     = 'santa_cruz_island',
+            #     "San Miguel Island"     = 'san_miguel_island',
+            #     "San Nicolas Island"    = 'san_nicolas_island',
+            #     "Santa Rosa Island"     = 'santa_rosa_island',
+            #     "Mainland"              = 'mainland',
+            #     "Anacapa Passage"       = 'anacapa_passage',
+            #     "Footprint"             = 'footprint',
+            #     "Piggy Bank"            = 'piggy_bank'
+            #     ),
 
-              selected = 'all'),
+              # selected = 'all'),
 
-            uiOutput("location"),  #Location is coming from renderUI in server.R
+            uiOutput("location")),  #Location is coming from renderUI in server.R
 # #             
             #Generate plot 
             plotOutput("plot", height = 250)
-               )))),
+               ))),
                tabPanel("Data Table",
                         br(),
                         DT::dataTableOutput("table")
