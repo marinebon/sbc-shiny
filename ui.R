@@ -47,11 +47,13 @@ shinyUI(
                 "Deep Fish Density "    = 'DeepFish',
                 "Fish Density"          = 'FishDensity',
                 "Mobile Invertebrates"  = 'Mobile'
-                )), 
+                ),
+              
+              uiOutput("location")), 
 # 
             selectInput(
               "sel_location",
-              label = div (em("Choose a Location:")),
+              label = div (em("Choose a location:")),
               choices = list(
                 "All"                   = 'all',
                 "Anacapa Island"        = 'anacapa_island',
