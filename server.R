@@ -30,18 +30,45 @@ shinyServer(function(input,output,session) {
     return(d)
   })
     
- loc <- reactive ({
-        switch(input$sel_dataset,
-              "Kelp Biomass"         = names(Kelpbio),
-              "Deep Fish Density"   = names(DeepFish),
-              "Fish Density"         = names(FishDensity),
-              "Mobile Invertebrates" = names(Mobile)
-        )
- })
+ # loc <- reactive ({
+ #        switch(input$sel_dataset,
+ #              "Kelp Biomass"         = names(Kelpbio),
+ #              "Deep Fish Density"    = names(DeepFish),
+ #              "Fish Density"         = names(FishDensity),
+ #              "Mobile Invertebrates" = names(Mobile)
+ #        )
+ # })
   
-      output$location <- renderUI({
-        selectInput("sel_location","Select a location", choices = loc())
-      })
+ #selectInput(
+ #   "sel_location",
+ #   label = div (em("Choose a location:")),
+ #   choices = list(
+ #     "All"                   = 'all',
+ #     "Anacapa Island"        = 'anacapa_island',
+ #     "Santa Barbara Island"  = 'santa_barbara_island',
+ #     "San Clemente Island"   = 'san_clemente_island',
+ #     "Santa Cruz Island"     = 'santa_cruz_island',
+ #     "San Miguel Island"     = 'san_miguel_island',
+ #     "San Nicolas Island"    = 'san_nicolas_island',
+ #     "Santa Rosa Island"     = 'santa_rosa_island',
+ #     "Mainland"              = 'mainland',
+ #     "Anacapa Passage"       = 'anacapa_passage',
+ #     "Footprint"             = 'footprint',
+ #     "Piggy Bank"            = 'piggy_bank'
+ #     ),
+ 
+ # loc_choices = switch(input$sel_dataset,
+ #        "Kelpbio"     = names(Kelpbio),
+ #        "DeepFish"    = names(DeepFish),
+ #        "FishDensity" = names(FishDensity),
+ #        "Mobile"      = names(Mobile))
+ 
+  output$ui_location <- renderUI({
+    selectInput(
+      "sel_location",
+      label = div (em("Choose a location:")),
+      choices = get_data() %>% distinct(location) %>% .$location)
+  })
 
   ## Plot data set on map 
   output$plot <- renderPlot({
