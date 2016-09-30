@@ -14,9 +14,8 @@ Mobile      <- read_csv("data/kelp_forest/mobileinvertbrate_diversity_web.csv")
 FishDensity <- read_csv("data/kelp_forest/fish_density_web.csv")
 Kelpbio     <- read_csv("data/kelp_forest/kelp_biomass_web.csv")
 var_names   <- read_csv("data/var_names.csv")
+local_names <- read_csv('data/local_names.csv')
 dataset_v   <- c('Mobile'='richness', 'FishDensity'='density', 'DeepFish'='richness', 'Kelpbio'='kelp_biomass_kg')
-#shp = readOGR('/Users/devinspencer/Downloads/ne_10m_admin_1_states_provinces','ne_10m_admin_1_states_provinces') # slotNames(shp) # summary(shp@data) # View(shp@data)
-#shp_ca = subset(shp, name == 'California') # plot(shp_ca)
 
 shinyServer(function(input,output,session) {
   
@@ -29,15 +28,6 @@ shinyServer(function(input,output,session) {
     # return data
     return(d)
   })
-    
- # loc <- reactive ({
- #        switch(input$sel_dataset,
- #              "Kelp Biomass"         = names(Kelpbio),
- #              "Deep Fish Density"    = names(DeepFish),
- #              "Fish Density"         = names(FishDensity),
- #              "Mobile Invertebrates" = names(Mobile)
- #        )
- # })
   
  #selectInput(
  #   "sel_location",
@@ -57,13 +47,8 @@ shinyServer(function(input,output,session) {
  #     "Piggy Bank"            = 'piggy_bank'
  #     ),
  
- # loc_choices = switch(input$sel_dataset,
- #        "Kelpbio"     = names(Kelpbio),
- #        "DeepFish"    = names(DeepFish),
- #        "FishDensity" = names(FishDensity),
- #        "Mobile"      = names(Mobile))
- 
   output$ui_location <- renderUI({
+    get_data() %>% filter(.$location) %>%
     selectInput(
       "sel_location",
       label = div (em("Choose a location:")),
@@ -73,7 +58,6 @@ shinyServer(function(input,output,session) {
   ## Plot data set on map 
   output$plot <- renderPlot({
     dataset<- get_data() 
-    write.csv(dataset,"data/aa.csv")
   
   ## Average diversity/biomass of all sites by year! 
     dataset<-dataset %>%
