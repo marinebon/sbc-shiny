@@ -53,7 +53,7 @@ shinyUI(
                   "Mobile Invertebrates"  = 'Mobile')),
               
               uiOutput("ui_location"),  #Location is coming from renderUI in server.R
-              
+             
               #Generate plot 
               plotOutput("plot", height = 250)
               )
