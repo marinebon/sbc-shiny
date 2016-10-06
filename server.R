@@ -14,38 +14,60 @@ Mobile      <- read_csv("data/kelp_forest/mobileinvertbrate_diversity_web.csv")
 FishDensity <- read_csv("data/kelp_forest/fish_density_web.csv")
 Kelpbio     <- read_csv("data/kelp_forest/kelp_biomass_web.csv")
 var_names   <- read_csv("data/var_names.csv")
+local_names <- read_csv("data/local_names.csv") %>%
+  rename(location = local)
 dataset_v   <- c('Mobile'='richness', 'FishDensity'='density', 'DeepFish'='richness', 'Kelpbio'='kelp_biomass_kg')
-#shp = readOGR('/Users/devinspencer/Downloads/ne_10m_admin_1_states_provinces','ne_10m_admin_1_states_provinces') # slotNames(shp) # summary(shp@data) # View(shp@data)
-#shp_ca = subset(shp, name == 'California') # plot(shp_ca)
 
 shinyServer(function(input,output,session) {
   
   ##Define data set to plot - filter first by data set and then filter by site
   
   ###########http://stackoverflow.com/questions/28379937/change-selectize-choices-but-retain-previously-selected-values#########
-  
-  ## http://shiny.rstudio.com/articles/dynamic-ui.html ###
   get_data <- reactive({
     d = get(input$sel_dataset)
     d['v'] = d[dataset_v[input$sel_dataset]]
     
-    
-    
-    if (input$sel_location != 'all'){
-      d <- filter(d, location == input$sel_location)
-    }
+    d <- d %>%
+      left_join(local_names) %>%
+      select(-location) %>%
+      rename(location = name)
 
     # return data
     return(d)
   })
+  
+ #selectInput(
+ #   "sel_location",
+ #   label = div (em("Choose a location:")),
+ #   choices = list(
+ #     "All"                   = 'all',
+ #     "Anacapa Island"        = 'anacapa_island',
+ #     "Santa Barbara Island"  = 'santa_barbara_island',
+ #     "San Clemente Island"   = 'san_clemente_island',
+ #     "Santa Cruz Island"     = 'santa_cruz_island',
+ #     "San Miguel Island"     = 'san_miguel_island',
+ #     "San Nicolas Island"    = 'san_nicolas_island',
+ #     "Santa Rosa Island"     = 'santa_rosa_island',
+ #     "Mainland"              = 'mainland',
+ #     "Anacapa Passage"       = 'anacapa_passage',
+ #     "Footprint"             = 'footprint',
+ #     "Piggy Bank"            = 'piggy_bank'
+ #     ),
+ 
+  output$ui_location <- renderUI({
+    selectInput(
+      "sel_location",
+      label = div (em("Choose a location:")),
+      choices = get_data() %>% distinct(location) %>% .$location)
+  })
 
   ## Plot data set on map 
   output$plot <- renderPlot({
-    dataset<- get_data()
+    dataset<- get_data() 
     
-  
   ## Average diversity/biomass of all sites by year! 
     dataset<-dataset %>%
+      filter(location == input$sel_location) %>% # filter dataset to selected location and whenever location changes
       group_by(year) %>%
       summarise(v=mean(v,na.rm=T)) %>%
       ungroup()

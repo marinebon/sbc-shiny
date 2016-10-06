@@ -23,67 +23,71 @@ shinyUI(
       br(),
       h2(div(strong("SBC MBON Interactive Map")),align="center"),
       hr(),
-      column(12,
-             tabsetPanel(
-               type="tabs",
-               tabPanel("Interactive Map",
-                        br(),
-                        leafletOutput("map", width="100%", height="600"),
-                        
-        #Panel for the plot and choosing a dataset on the map :) 
-          absolutePanel(id= "Map Controls", class = "panel panel-default", fixed = TRUE, draggable = TRUE, top = 150, left = "auto", right = 20, bottom = "auto", width = 350, height = "auto", style = "opacity:0.85; z-index = 100" ,
-          wellPanel(
-            h4(div(strong("Filtering Options"))),
-            br(),
-            
-            downloadButton('downloadData', 'Download Dataset'),
-            br(),
-            
-            selectInput(
-              "sel_dataset",
-              label = div(em("Choose dataset to display:")),
-              choices = list(
-                "Kelp Biomass"          = 'Kelpbio',
-                "Deep Fish Density "    = 'DeepFish',
-                "Fish Density"          = 'FishDensity',
-                "Mobile Invertebrates"  = 'Mobile'
-                ),
+      column(12, tabsetPanel(
+        type="tabs",
+          
+        tabPanel(
+          "Interactive Map",
+          br(),
+          leafletOutput("map", width="100%", height="600"),
+                      
+          #Panel for the plot and choosing a dataset on the map :) 
+          absolutePanel(
+            id= "Map Controls", class = "panel panel-default", fixed = TRUE, 
+            draggable = TRUE, top = 150, left = "auto", right = 20, bottom = "auto", 
+            width = 350, height = "auto", style = "opacity:0.85; z-index = 100" ,
+            wellPanel(
+              h4(div(strong("Filtering Options"))),
+              br(),
               
-              uiOutput("location")), 
-# 
-            selectInput(
-              "sel_location",
-              label = div (em("Choose a location:")),
-              choices = list(
-                "All"                   = 'all',
-                "Anacapa Island"        = 'anacapa_island',
-                "Santa Barbara Island"  = 'santa_barbara_island',
-                "San Clemente Island"   = 'san_clemente_island',
-                "Santa Cruz Island"     = 'santa_cruz_island',
-                "San Miguel Island"     = 'san_miguel_island',
-                "San Nicolas Island"    = 'san_nicolas_island',
-                "Santa Rosa Island"     = 'santa_rosa_island',
-                "Mainland"              = 'mainland',
-                "Anacapa Passage"       = 'anacapa_passage',
-                "Footprint"             = 'footprint',
-                "Piggy Bank"            = 'piggy_bank'
-                ),
+              downloadButton('downloadData', 'Download Dataset'),
+              br(),
               
-              selected = 'all'),
-#             
-            #Generate plot 
-            plotOutput("plot", height = 250)
-               ))),
-               tabPanel("Data Table",
-                        br(),
-                        DT::dataTableOutput("table")
-               ),
-               tabPanel("Data Summary",
-                        br(),
-                        DT::dataTableOutput("summary")
-               )
-          )
-               )
-             )
-      )
-)
+              selectInput(
+                "sel_dataset",
+                label = div(em("Choose a dataset to display:")),
+                choices = list(
+                  "Kelp Biomass"          = 'Kelpbio',
+                  "Deep Fish Density "    = 'DeepFish',
+                  "Fish Density"          = 'FishDensity',
+                  "Mobile Invertebrates"  = 'Mobile')),
+              
+              uiOutput("ui_location"),  #Location is coming from renderUI in server.R
+             
+              #Generate plot 
+              plotOutput("plot", height = 250)
+              )
+            )
+          ),
+        
+        tabPanel(
+          "Data Table",
+          br(),
+          DT::dataTableOutput("table")),
+        
+        tabPanel(
+          "Data Summary",
+          br(),
+          DT::dataTableOutput("summary"))
+        )) # closing tabsetPanel, column
+      ))) # closing fluidRow, fluidPage, shinyUI
+
+
+# selectInput(
+#   "sel_location",
+#   label = div (em("Choose a location:")),
+#   choices = list(
+#     "All"                   = 'all',
+#     "Anacapa Island"        = 'anacapa_island',
+#     "Santa Barbara Island"  = 'santa_barbara_island',
+#     "San Clemente Island"   = 'san_clemente_island',
+#     "Santa Cruz Island"     = 'santa_cruz_island',
+#     "San Miguel Island"     = 'san_miguel_island',
+#     "San Nicolas Island"    = 'san_nicolas_island',
+#     "Santa Rosa Island"     = 'santa_rosa_island',
+#     "Mainland"              = 'mainland',
+#     "Anacapa Passage"       = 'anacapa_passage',
+#     "Footprint"             = 'footprint',
+#     "Piggy Bank"            = 'piggy_bank'
+#     ),
+# selected = 'all'),
