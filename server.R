@@ -28,6 +28,7 @@ shinyServer(function(input,output,session) {
     d['v'] = d[dataset_v[input$sel_dataset]]
     
     d <- d %>%
+      na.omit() %>%
       left_join(local_names) %>%
       select(-location) %>%
       rename(location = name)
