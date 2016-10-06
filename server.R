@@ -41,8 +41,8 @@ shinyServer(function(input,output,session) {
 
   ## Plot data set on map 
   output$plot <- renderPlot({
-    dataset<- get_data() 
-    write.csv(dataset,"data/aa.csv")
+    dataset<- get_data()
+    
   
   ## Average diversity/biomass of all sites by year! 
     dataset<-dataset %>%
