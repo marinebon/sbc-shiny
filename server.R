@@ -113,8 +113,9 @@ shinyServer(function(input,output,session) {
   
   ##Generate map from summary data above
   output$map <- renderLeaflet({
-    
+
     get_data() %>%
+      filter(location == input$sel_location) %>%
       summarize_data() %>%
       leaflet() %>%
         addProviderTiles("Esri.OceanBasemap") %>%  ##Esri.NatGeoWorldMap,* Esri.OceanBasemap, Esri.WorldImager
