@@ -1,0 +1,10 @@
+name: SBCMBON_Interactive_Map
+account: sbcmbon
+server: shinyapps.io
+appId: 130221
+bundleId: 579871
+url: https://sbcmbon.shinyapps.io/SBCMBON_Interactive_Map/
+when: 1475869142.83348
+asMultiple: FALSE
+asStatic: FALSE
+ignoredFiles: data/aa.csv

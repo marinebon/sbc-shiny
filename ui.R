@@ -15,7 +15,7 @@ Mobile <- read.csv("data/kelp_forest/mobileinvertbrate_diversity_web.csv",header
 FishDensity<- read.csv("data/kelp_forest/fish_density_web.csv",header=TRUE)
 Kelpbio<- read.csv("data/kelp_forest/kelp_biomass_web.csv", header=TRUE)
 
-site <- as.character(unique(DeepFish$site)) ##Convert site names to list - if these differ between datasets, you will have to change
+# site <- as.character(unique(DeepFish$site)) ##Convert site names to list - if these differ between datasets, you will have to change
 
 shinyUI(
   fluidPage(
