@@ -35,13 +35,13 @@ shinyUI(
           absolutePanel(
             id= "Map Controls", class = "panel panel-default", fixed = TRUE, 
             draggable = TRUE, top = 150, left = "auto", right = 20, bottom = "auto", 
-            width = 350, height = "auto", style = "opacity:0.85; z-index = 100" ,
+            width = 300, height = "auto", style = "opacity:0.85; z-index = 100" ,
             wellPanel(
               h4(div(strong("Filtering Options"))),
               br(),
               
-              downloadButton('downloadData', 'Download Dataset'),
-              br(),
+              # downloadButton('downloadData', 'Download Dataset'),
+              # br(), Download button dormant for the moment :) when you're actually ready to share the data it can be reactivated! 
               
               selectInput(
                 "sel_dataset",

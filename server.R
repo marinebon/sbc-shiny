@@ -103,7 +103,7 @@ shinyServer(function(input,output,session) {
       filter(
         !is.na(longitude),
         !is.na(latitude)) %>%
-      group_by(site) %>% 
+      group_by(location) %>% 
       summarise(
         Longitude     = first(longitude),
         Latitude      = first(latitude),
@@ -141,24 +141,16 @@ shinyServer(function(input,output,session) {
       DT::datatable()
   })
   
-  ##Generate downloadable Data 
-  output$downloadData <- downloadHandler(
-    filename = function() { 
-      paste(input$sel_dataset, '_', '.csv', sep='')
-      #paste(input$sel_dataset, '.zip', sep='')
-    },
-    content = function(file) {
-      write.csv(get_data(), file)
-      
-      # # Trying to write shapefile, but getting error: "Layer creation failed"
-      # #file = 'fish.zip'
-      # tmp_dir = tempdir() # '/Users/devinspencer/Downloads/tmp_shiny' # chmod -R 777 tmp_shiny
-      # writeOGR(shp_ca, tmp_dir, tools::file_path_sans_ext(file), driver='ESRI Shapefile', overwrite_layer=T) # ogrDrivers()
-      # zip_inputs = list.files(
-      #   path=tmp_dir, full.names = T,
-      #   pattern=sprintf('%s\\..*', tools::file_path_sans_ext(file)))
-      # zip(file, zip_inputs)
+  ##Generate downloadable Data, not avaliable now because we dont want people to use the data just yet
+  # output$downloadData <- downloadHandler(
+  #   filename = function() { 
+  #     paste(input$sel_dataset, '_', '.csv', sep='')
+  #     #paste(input$sel_dataset, '.zip', sep='')
+  #   },
+  #   content = function(file) {
+  #     write.csv(get_data(), file)
+  #     
     }
   )
   
-})
+# })Add back in when you add the dowload data thing back in so it will work! :) 
