@@ -61,6 +61,13 @@ shinyServer(function(input,output,session) {
       label = div (em("Choose a location:")),
       choices = get_data() %>% distinct(location) %>% .$location)
   })
+  
+  output$ui_site <- renderUI({
+    selectInput(
+      "sel_site",
+      label = div (em("Choose a site:")),
+      choices = get_data() %>% distinct(site) %>% .$site)
+  })
 
   ## Plot data set on map 
   output$plot <- renderPlot({
@@ -117,6 +124,7 @@ shinyServer(function(input,output,session) {
 
     get_data() %>%
       filter(location == input$sel_location) %>%
+      filter(site == input$sel_site) %>%
       summarize_data() %>%
       leaflet() %>%
         addProviderTiles("Esri.OceanBasemap") %>%  ##Esri.NatGeoWorldMap,* Esri.OceanBasemap, Esri.WorldImager
@@ -125,7 +133,7 @@ shinyServer(function(input,output,session) {
           lng = ~Longitude,
           lat = ~Latitude,
           popup = ~paste(
-              strong("Site: "), site, br(),
+              strong("Site: "),site, br(),
               strong("Avg. value: "), as.character(AverageValue)),
           # radius = ~NumberofYears,
           fillOpacity=0.8,
