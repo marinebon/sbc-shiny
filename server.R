@@ -62,12 +62,12 @@ shinyServer(function(input,output,session) {
       choices = get_data() %>% distinct(location) %>% .$location)
   })
   
-  output$ui_site <- renderUI({
-    selectInput(
-      "sel_site",
-      label = div (em("Choose a site:")),
-      choices = get_data() %>% distinct(site) %>% .$site)
-  })
+  # output$ui_site <- renderUI({
+  #   selectInput(
+  #     "sel_site",
+  #     label = div (em("Choose a site:")),
+  #     choices = get_data() %>% distinct(site) %>% .$site)
+  # })
 
   ## Plot data set on map 
   output$plot <- renderPlot({
@@ -110,7 +110,7 @@ shinyServer(function(input,output,session) {
       filter(
         !is.na(longitude),
         !is.na(latitude)) %>%
-      group_by(location) %>% 
+      group_by(location,site) %>% 
       summarise(
         Longitude     = first(longitude),
         Latitude      = first(latitude),
@@ -124,7 +124,7 @@ shinyServer(function(input,output,session) {
 
     get_data() %>%
       filter(location == input$sel_location) %>%
-      filter(site == input$sel_site) %>%
+      # filter(site == input$sel_site) %>%
       summarize_data() %>%
       leaflet() %>%
         addProviderTiles("Esri.OceanBasemap") %>%  ##Esri.NatGeoWorldMap,* Esri.OceanBasemap, Esri.WorldImager

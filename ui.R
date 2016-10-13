@@ -54,7 +54,7 @@ shinyUI(
               
               uiOutput("ui_location"),  #Location is coming from renderUI in server.R
               
-              uiOutput("ui_site"), 
+              # uiOutput("ui_site"),
              
               #Generate plot 
               plotOutput("plot", height = 250)
