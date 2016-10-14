@@ -134,7 +134,7 @@ shinyServer(function(input,output,session) {
           lat = ~Latitude,
           popup = ~paste(
               strong("Site: "),site, br(),
-              strong("Avg. value: "), as.character(AverageValue)),
+              strong("Avg. value: "),round(AverageValue, digits = 2)),
           # radius = ~NumberofYears,
           fillOpacity=0.8,
           clusterOptions = markerClusterOptions())
