@@ -17,6 +17,7 @@ var_names   <- read_csv("data/var_names.csv")
 local_names <- read_csv("data/local_names.csv") %>%
   rename(location = local)
 dataset_v   <- c('Mobile'='richness', 'FishDensity'='density', 'DeepFish'='richness', 'Kelpbio'='kelp_biomass_kg')
+plot_titles <- c('Mobile'='Total Mobile Invertebrate Species Richness', 'FishDensity'='density', 'DeepFish'='richness', 'Kelpbio'='kelp_biomass_kg')
 
 shinyServer(function(input,output,session) {
   
@@ -26,7 +27,7 @@ shinyServer(function(input,output,session) {
   get_data <- reactive({
     d = get(input$sel_dataset)
     d['v'] = d[dataset_v[input$sel_dataset]]
-    
+  
     d <- d %>%
       na.omit() %>%
       left_join(local_names) %>%
@@ -80,7 +81,7 @@ shinyServer(function(input,output,session) {
       summarise(v=mean(v,na.rm=T)) %>%
       ungroup()
      fit<-lm(dataset$v~dataset$year)
-    plot(dataset$year, dataset$v, xlab = "Year", ylab = dataset_v[input$sel_dataset], frame.plot = "FALSE", col = "darkblue")
+    plot(dataset$year, dataset$v, main = dataset_v[input$sel_dataset], xlab = "Year", ylab = dataset_v[input$sel_dataset], frame.plot = "FALSE", col = "darkblue")
     abline(fit,col="darkblue")
   })
   
@@ -95,7 +96,7 @@ shinyServer(function(input,output,session) {
     }
     return(d)
   }
-  
+
   ##Generate data table
   output$table <- DT::renderDataTable({
     get_data() %>%
