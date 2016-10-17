@@ -84,7 +84,17 @@ shinyServer(function(input,output,session) {
       ungroup()
      fit<-lm(dataset$v~dataset$year)
      plot<- qplot(dataset$year, dataset$v, xlab = "Year", ylab = dataset_v[input$sel_dataset], main = plot_titles[input$sel_dataset])
-     plot + geom_smooth(method = "lm", se = FALSE)
+     
+     #This is great for formatting your ggplot! http://docs.ggplot2.org/dev/vignettes/themes.html
+     plot + geom_smooth(method = "lm", se = FALSE, colour = "darkblue", size=0.5) + geom_point(color='darkblue') + geom_errorbar() theme(
+       axis.text = element_text(size = 10),
+       axis.line.x = element_line(colour = "black"),
+       axis.line.y = element_line(colour = "black"),
+       panel.grid.major = element_blank(),
+       panel.grid.minor = element_blank(),
+       panel.background = element_blank()
+     )
+     
     # plot(dataset$year, dataset$v, main = plot_titles[input$sel_dataset], xlab = "Year", ylab = dataset_v[input$sel_dataset], frame.plot = "FALSE", col = "darkblue")
     # abline(fit,col="darkblue")
   })
