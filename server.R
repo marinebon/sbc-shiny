@@ -8,6 +8,7 @@ library(shinythemes)
 library(leaflet)
 library(rsconnect)
 library(rgdal)# install.packages('rgdal') # https://cran.r-project.org/web/views/Spatial.html
+library(ggplot2)
 
 DeepFish    <- read_csv("data/deep_water_fish_diversity/fish_diversity.csv")
 Mobile      <- read_csv("data/kelp_forest/mobileinvertbrate_diversity_web.csv")
@@ -82,8 +83,10 @@ shinyServer(function(input,output,session) {
       summarise(v=mean(v,na.rm=T)) %>%
       ungroup()
      fit<-lm(dataset$v~dataset$year)
-    plot(dataset$year, dataset$v, main = plot_titles[input$sel_dataset], xlab = "Year", ylab = dataset_v[input$sel_dataset], frame.plot = "FALSE", col = "darkblue")
-    abline(fit,col="darkblue")
+     plot<- qplot(dataset$year, dataset$v, xlab = "Year", ylab = dataset_v[input$sel_dataset], main = plot_titles[input$sel_dataset])
+     plot + geom_smooth(method = "lm", se = FALSE)
+    # plot(dataset$year, dataset$v, main = plot_titles[input$sel_dataset], xlab = "Year", ylab = dataset_v[input$sel_dataset], frame.plot = "FALSE", col = "darkblue")
+    # abline(fit,col="darkblue")
   })
   
   # ggplot(data=Kelpbio, aes(x=year, y=kelp_biomass_kg)) + geom_bar(stat="identity")
