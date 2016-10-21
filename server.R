@@ -1,4 +1,5 @@
 ###### Practcing server.R###
+library(plotrix)
 library(htmltools)
 library(shiny)
 library(readr)
@@ -19,6 +20,7 @@ local_names <- read_csv("data/local_names.csv") %>%
   rename(location = local)
 dataset_v   <- c('Mobile'='richness', 'FishDensity'='density', 'DeepFish'='richness', 'Kelpbio'='kelp_biomass_kg')
 plot_titles <- c('Mobile'='Total Species Richness', 'FishDensity'='Total Fish Density', 'DeepFish'='Total Fish Richness', 'Kelpbio'='Total Biomass (Kg)')
+
 
 shinyServer(function(input,output,session) {
   
@@ -80,7 +82,7 @@ shinyServer(function(input,output,session) {
     dataset<-dataset %>%
       filter(location == input$sel_location) %>% # filter dataset to selected location and whenever location changes
       group_by(year) %>%
-      summarise(v=mean(v,na.rm=T)) %>%
+      summarise(v=mean(v,na.rm=T), se=std.error(v,na.rm=T)) %>%
       ungroup()
      fit<-lm(dataset$v~dataset$year)
      plot<- qplot(dataset$year, dataset$v, xlab = "Year", ylab = dataset_v[input$sel_dataset], main = plot_titles[input$sel_dataset])
