@@ -82,17 +82,17 @@ shinyServer(function(input,output,session) {
     dataset<-dataset %>%
       filter(location == input$sel_location) %>% # filter dataset to selected location and whenever location changes
       group_by(year) %>%
-      summarise(v=mean(v,na.rm=T), se=std.error(v,na.rm=T)) %>%
+      summarise(v=mean(v,na.rm=T)) %>%
       ungroup()
      fit<-lm(dataset$v~dataset$year)
      plot<- qplot(dataset$year, dataset$v, xlab = "Year", ylab = dataset_v[input$sel_dataset], main = plot_titles[input$sel_dataset])
      
      #This is great for formatting your ggplot! http://docs.ggplot2.org/dev/vignettes/themes.html
-     plot + geom_smooth(method = "lm", se = FALSE, colour = "darkblue", size=0.5) + geom_point(color='darkblue') + geom_errorbar(aes(ymin=dataset$v-se, ymax=dataset$v+se), width=.1) +
+     plot + geom_smooth(method = "lm", se = T, colour = "darkblue", size=0.5) + geom_point(color='darkblue') + xlim(min(dataset$year),max(dataset$year)) +
      theme(
        axis.text = element_text(size = 10),
-       axis.line.x = element_line(colour = "black"),
-       axis.line.y = element_line(colour = "black"),
+       axis.line.x = element_line(colour = "red"),
+       axis.line.y = element_line(colour = "purple"),
        panel.grid.major = element_blank(),
        panel.grid.minor = element_blank(),
        panel.background = element_blank()
