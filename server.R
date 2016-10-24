@@ -88,11 +88,11 @@ shinyServer(function(input,output,session) {
      plot<- qplot(dataset$year, dataset$v, xlab = "Year", ylab = dataset_v[input$sel_dataset], main = plot_titles[input$sel_dataset])
      
      #This is great for formatting your ggplot! http://docs.ggplot2.org/dev/vignettes/themes.html
-     plot + geom_smooth(method = "lm", se = T, colour = "darkblue", size=0.5) + geom_point(color='darkblue') + xlim(min(dataset$year),max(dataset$year)) +
+     plot + geom_smooth(method = "lm", se = T, colour = "darkblue", size=0.5)     + geom_point(color='darkblue') + xlim(min(dataset$year),max(dataset$year)) +
      theme(
-       axis.text = element_text(size = 10),
-       axis.line.x = element_line(colour = "red"),
-       axis.line.y = element_line(colour = "purple"),
+       axis.text        = element_text(size = 10),
+       axis.line.x      = element_line(colour = "black"),
+       axis.line.y      = element_line(colour = "black"),
        panel.grid.major = element_blank(),
        panel.grid.minor = element_blank(),
        panel.background = element_blank()
